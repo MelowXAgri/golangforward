@@ -1,10 +1,10 @@
 {
     "api_id": 14119003,
     "api_hash": "a368b9003f375c414264b6701cc65e21",
-    "channel_src": 1780306404,
-    "channel_dst": 3063038513,
+    "channel_src": 2234232911,
+    "channel_dst": -1003099178684,
     "admin": [
-        692043981
+        692043981,5729393396
     ],
     "onStart": false,
     "autoStart": false
