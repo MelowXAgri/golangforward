@@ -371,7 +371,7 @@ func safeForward(bot *telegram.Client, dstPeer telegram.InputPeer, fromPeer tele
 				} else if fwCount <= 0 {
 					fwCount = 1
 				}
-                time.Sleep(5 * time)
+                time.Sleep(5 * time.Second)
                 return nil
 			}
 			fmt.Println("Error forwarding:", err)
