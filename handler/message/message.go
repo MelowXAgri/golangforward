@@ -2,9 +2,12 @@ package message
 
 import (
 	"fmt"
+	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"tgbot/config"
@@ -36,8 +39,31 @@ func RegisterMessageHandler(bot *telegram.Client, user *telegram.Client, cfg *co
 		ret += "/channeldst [channelId] -> Channel destination\n"
 		ret += "/autostart [on|off]\n"
 		ret += "/fw -> Start forward\n"
+		ret += "/clear -> Clear ID\n"
+		ret += "/restart -> Restart\n"
 		ret += "/getid -> Get id of channel, group or your."
 		msg.Reply(ret)
+		return nil
+	}, notChannel, isAdmin)
+
+	bot.On("message:/clear", func(msg *telegram.NewMessage) error {
+		cfg.ChannelSrc = 0
+		cfg.ChannelDst = 0
+		cfg.Save()
+		msg.Reply("Channel id source and destinaton has cleared.")
+		return nil
+	}, notChannel, isAdmin)
+
+	bot.On("message:/restart", func(msg *telegram.NewMessage) error {
+		exe, err := os.Executable()
+	    if err != nil {
+		    return err
+	    }
+	    args := os.Args
+	    env := os.Environ()
+
+		msg.Reply("Restarting bots...")
+	    syscall.Exec(exe, args, env)
 		return nil
 	}, notChannel, isAdmin)
 
@@ -227,6 +253,9 @@ func RegisterMessageHandler(bot *telegram.Client, user *telegram.Client, cfg *co
 		} else {
 			anu, _ = anu.Edit(fmt.Sprintf("Total: %d videos fetched. Sending videos...", len(docs)), telegram.SendOptions{})
 		}
+		sort.SliceStable(docs, func(i, j int) bool {
+            return docs[i].Date() < docs[j].Date() // (lama → baru)
+        })
 		seenID := make(map[int32]bool)
 		for i := 0; i < len(docs); i += fwCount {
             var msgIds []int32
