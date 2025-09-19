@@ -9,7 +9,7 @@ import (
 )
 
 const (
-    botToken = "7078343610:AAGDn3AT6gAKAW_BOTIzla-Ciw4RFYjq2bw"
+    botToken = "8336432272:AAEzbJXDQlkxurQp9UWdBcOT-t1RQAbxZyI"
     phoneNumber = "+22892888812"
 )
 
